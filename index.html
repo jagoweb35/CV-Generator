@@ -126,13 +126,16 @@
         .cv-paper {
           width: 210mm !important;
           min-height: 297mm !important;
-          padding: 15mm !important;
+          max-height: 297mm !important;
+          padding: 12mm !important;
           margin: 0 !important;
           box-sizing: border-box !important;
           background: white !important;
           box-shadow: none !important;
           border: none !important;
+          overflow: hidden !important;
           page-break-after: always;
+          page-break-inside: avoid;
         }
 
         /* All Template Fonts for Print */
@@ -154,8 +157,92 @@
         .template-elegant { font-family: "Crimson Text", serif !important; }
         .template-corporate { font-family: "Work Sans", sans-serif !important; }
         .template-swiss { font-family: Inter, sans-serif !important; }
-      }
 
+        /* CRITICAL: Reset margin negatif untuk print */
+        .-mx-6, .-mx-4 { margin-left: 0 !important; margin-right: 0 !important; }
+        .-mt-6, .-mt-4 { margin-top: 0 !important; }
+        .-mb-6, .-mb-4 { margin-bottom: 0 !important; }
+        .-ml-12, .-mr-16 { margin-left: 0 !important; margin-right: 0 !important; }
+
+        /* CRITICAL: Batasi ukuran font untuk print */
+        .text-5xl { font-size: 28pt !important; line-height: 1.2 !important; }
+        .text-4xl { font-size: 24pt !important; line-height: 1.2 !important; }
+        .text-3xl { font-size: 20pt !important; line-height: 1.2 !important; }
+        .text-2xl { font-size: 16pt !important; line-height: 1.3 !important; }
+        .text-xl { font-size: 14pt !important; line-height: 1.4 !important; }
+        .text-lg { font-size: 12pt !important; line-height: 1.4 !important; }
+        .text-base { font-size: 11pt !important; line-height: 1.5 !important; }
+        .text-sm { font-size: 10pt !important; line-height: 1.5 !important; }
+        .text-xs { font-size: 9pt !important; line-height: 1.5 !important; }
+
+        /* CRITICAL: Kurangi spacing untuk print */
+        .p-8 { padding: 16px !important; }
+        .p-6 { padding: 12px !important; }
+        .p-5 { padding: 10px !important; }
+        .p-4 { padding: 8px !important; }
+        .px-8 { padding-left: 16px !important; padding-right: 16px !important; }
+        .px-6 { padding-left: 12px !important; padding-right: 12px !important; }
+        .py-6 { padding-top: 12px !important; padding-bottom: 12px !important; }
+        .space-y-6 > * + * { margin-top: 12px !important; }
+        .space-y-4 > * + * { margin-top: 8px !important; }
+        .space-y-3 > * + * { margin-top: 6px !important; }
+        .gap-8 { gap: 16px !important; }
+        .gap-6 { gap: 12px !important; }
+        .gap-4 { gap: 8px !important; }
+        .mb-8 { margin-bottom: 16px !important; }
+        .mb-6 { margin-bottom: 12px !important; }
+        .mb-4 { margin-bottom: 8px !important; }
+        .mt-8 { margin-top: 16px !important; }
+        .mt-6 { margin-top: 12px !important; }
+
+        /* CRITICAL: Page break control */
+        .break-inside-avoid { break-inside: avoid !important; page-break-inside: avoid !important; }
+        .break-before-auto { break-before: auto !important; page-break-before: auto !important; }
+        .break-after-auto { break-after: auto !important; page-break-after: auto !important; }
+        
+        /* Hindari elemen terpotong */
+        .cv-section { break-inside: avoid !important; page-break-inside: avoid !important; }
+        .experience-item { break-inside: avoid !important; page-break-inside: avoid !important; }
+        .education-item { break-inside: avoid !important; page-break-inside: avoid !important; }
+        
+        /* Hapus transform untuk print */
+        .transform, .-rotate-1, .-rotate-2, .-rotate-3, .-rotate-6, 
+        .rotate-1, .rotate-3, .rotate-6, .-translate-x-[\\9px\\] {
+          transform: none !important;
+        }
+
+        /* Hapus gradient kompleks, gunakan solid color */
+        .bg-gradient-to-r, .bg-gradient-to-br {
+          background-image: none !important;
+        }
+
+        /* Simplifikasi border untuk print */
+        .border-double { border-style: solid !important; border-width: 2px !important; }
+        .border-4 { border-width: 2px !important; }
+        .border-b-4 { border-bottom-width: 2px !important; }
+        .border-l-4 { border-left-width: 2px !important; }
+        .border-t-4 { border-top-width: 2px !important; }
+
+        /* Shadow dihapus untuk print */
+        .shadow-lg, .shadow-md, .shadow-sm, .shadow {
+          box-shadow: none !important;
+        }
+
+        /* Backdrop blur dihapus */
+        .backdrop-blur, .backdrop-blur-sm {
+          backdrop-filter: none !important;
+        }
+
+        /* Maksimal 2 kolom untuk grid print */
+        .grid-cols-12 { grid-template-columns: repeat(2, 1fr) !important; }
+        .grid-cols-4 { grid-template-columns: repeat(2, 1fr) !important; }
+        .grid-cols-3 { grid-template-columns: repeat(2, 1fr) !important; }
+        .col-span-8, .col-span-9 { grid-column: span 2 / span 2 !important; }
+        .col-span-4, .col-span-3, .col-span-2 { grid-column: span 1 / span 1 !important; }
+
+        /* Whitespace control */
+        .whitespace-nowrap { white-space: normal !important; }
+      }
       @media screen {
         #print-area {
           display: none;
@@ -910,7 +997,7 @@
             <div class="mb-4">
               <h2 class="text-base font-bold uppercase border-b border-black mb-3 pb-1">Pengalaman Kerja</h2>
               ${data.experiences.map((exp) => `
-                <div class="mb-4">
+                <div class="mb-4 experience-item break-inside-avoid">
                   <div class="flex justify-between items-baseline mb-1">
                     <span class="font-bold text-sm">${exp.position}</span>
                     <span class="text-xs">${exp.duration}</span>
@@ -926,7 +1013,7 @@
             <div class="mb-4">
               <h2 class="text-base font-bold uppercase border-b border-black mb-3 pb-1">Pendidikan</h2>
               ${data.educations.map((edu) => `
-                <div class="mb-2 flex justify-between items-baseline">
+                <div class="mb-2 flex justify-between items-baseline education-item break-inside-avoid">
                   <div class="text-sm"><span class="font-bold">${edu.degree}</span> - ${edu.school}</div>
                   <span class="text-xs">${edu.year}</span>
                 </div>
@@ -940,7 +1027,7 @@
               <div>
                 <h2 class="text-base font-bold uppercase border-b border-black mb-2 pb-1">Sertifikasi</h2>
                 ${data.certifications.map((cert) => `
-                  <div class="flex justify-between text-sm mb-1">
+                  <div class="flex justify-between text-sm mb-1 break-inside-avoid">
                     <span>${cert.name}</span>
                     <span class="text-xs">${cert.year}</span>
                   </div>
@@ -956,7 +1043,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-hr cv-paper bg-white">
-            <div class="bg-gradient-to-r from-purple-600 to-pink-500 text-white p-6 mb-6">
+            <div class="bg-gradient-to-r from-purple-600 to-pink-500 text-white p-6 mb-6 cv-section break-inside-avoid">
               <h1 class="text-3xl font-bold mb-2">${data.fullName}</h1>
               <p class="text-lg mb-4">${data.profession}</p>
               <div class="flex flex-wrap gap-2 text-sm">
@@ -968,15 +1055,15 @@
               </div>
             </div>
             <div class="px-6 pb-6">
-              <div class="mb-6">
+              <div class="mb-6 cv-section break-inside-avoid">
                 <h2 class="text-lg font-bold text-purple-600 mb-3 border-b-2 border-purple-200 pb-1">Tentang Saya</h2>
                 <p class="text-gray-700 leading-relaxed text-sm">${data.summary}</p>
               </div>
-              <div class="mb-6">
+              <div class="mb-6 cv-section break-inside-avoid">
                 <h2 class="text-lg font-bold text-purple-600 mb-4 border-b-2 border-purple-200 pb-1">Pengalaman Kerja</h2>
                 <div class="space-y-4">
                   ${data.experiences.map((exp) => `
-                    <div class="border-l-4 border-purple-400 pl-4">
+                    <div class="border-l-4 border-purple-400 pl-4 experience-item break-inside-avoid">
                       <div class="flex justify-between items-baseline mb-1">
                         <h3 class="font-bold text-gray-800">${exp.position}</h3>
                         <span class="text-sm text-purple-600 bg-purple-100 px-2 py-1 rounded">${exp.duration}</span>
@@ -988,17 +1075,17 @@
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-6">
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-lg font-bold text-purple-600 mb-3 border-b-2 border-purple-200 pb-1">Pendidikan</h2>
                   ${data.educations.map((edu) => `
-                    <div class="mb-3">
+                    <div class="mb-3 education-item break-inside-avoid">
                       <h4 class="font-semibold text-gray-800 text-sm">${edu.degree}</h4>
                       <p class="text-sm text-gray-600">${edu.school}</p>
                       <p class="text-xs text-purple-600 mt-1">${edu.year}</p>
                     </div>
                   `).join("")}
                 </div>
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-lg font-bold text-purple-600 mb-3 border-b-2 border-purple-200 pb-1">Keahlian</h2>
                   <div class="flex flex-wrap gap-2">
                     ${data.skills.map((skill) => `<span class="bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">${skill.name}</span>`).join("")}
@@ -1006,7 +1093,7 @@
                   ${data.certifications.length > 0 && data.certifications[0].name ? `
                     <h2 class="text-lg font-bold text-purple-600 mt-4 mb-3 border-b-2 border-purple-200 pb-1">Sertifikasi</h2>
                     <div class="space-y-2">
-                      ${data.certifications.map((cert) => `<div class="flex justify-between text-sm"><span>${cert.name}</span><span class="text-yellow-600">${cert.year}</span></div>`).join("")}
+                      ${data.certifications.map((cert) => `<div class="flex justify-between text-sm break-inside-avoid"><span>${cert.name}</span><span class="text-yellow-600">${cert.year}</span></div>`).join("")}
                     </div>
                   ` : ""}
                 </div>
@@ -1021,7 +1108,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-admin cv-paper bg-white">
-            <div class="border-b-4 border-blue-600 pb-6 mb-6">
+            <div class="border-b-4 border-blue-600 pb-6 mb-6 cv-section break-inside-avoid">
               <h1 class="text-3xl font-bold text-blue-900 mb-2">${data.fullName}</h1>
               <p class="text-xl text-blue-600 mb-4">${data.profession}</p>
               <div class="grid grid-cols-2 gap-y-2 gap-x-4 text-sm text-gray-700">
@@ -1032,14 +1119,14 @@
                 ${hasWebsite ? `<div class="flex items-center gap-2 col-span-2"><i class="fas fa-globe text-blue-600 w-4"></i><span class="break-all">${data.website}</span></div>` : ""}
               </div>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <h2 class="text-lg font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-3">PROFIL PROFESIONAL</h2>
               <p class="text-gray-700 text-justify leading-relaxed text-sm pl-3">${data.summary}</p>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <h2 class="text-lg font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-4">PENGALAMAN KERJA</h2>
               ${data.experiences.map((exp) => `
-                <div class="mb-4 pl-3">
+                <div class="mb-4 pl-3 experience-item break-inside-avoid">
                   <div class="flex justify-between items-baseline mb-1 border-b border-gray-200 pb-1">
                     <span class="font-bold text-blue-800 text-sm">${exp.position}</span>
                     <span class="text-sm text-gray-600">${exp.duration}</span>
@@ -1050,17 +1137,17 @@
               `).join("")}
             </div>
             <div class="grid grid-cols-2 gap-6">
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <h2 class="text-lg font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-3">PENDIDIKAN</h2>
                 ${data.educations.map((edu) => `
-                  <div class="mb-3 pl-3">
+                  <div class="mb-3 pl-3 education-item break-inside-avoid">
                     <p class="font-semibold text-gray-800 text-sm">${edu.degree}</p>
                     <p class="text-sm text-gray-600">${edu.school}</p>
                     <p class="text-xs text-blue-600 mt-1">${edu.year}</p>
                   </div>
                 `).join("")}
               </div>
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <h2 class="text-lg font-bold text-blue-900 border-l-4 border-blue-600 pl-3 mb-3">KEAHLIAN</h2>
                 <ul class="list-disc list-inside text-sm text-gray-700 pl-3 space-y-1">
                   ${data.skills.map((skill) => `<li>${skill.name}</li>`).join("")}
@@ -1085,19 +1172,19 @@
         if (hasWebsite) contacts.push(data.website);
         return `
           <div class="template-accounting cv-paper bg-white">
-            <div class="text-center border-double border-4 border-green-800 p-4 mb-6">
+            <div class="text-center border-double border-4 border-green-800 p-4 mb-6 cv-section break-inside-avoid">
               <h1 class="text-2xl font-bold text-green-900 uppercase tracking-widest mb-2">${data.fullName}</h1>
               <p class="text-green-700 font-semibold mb-3">${data.profession}</p>
               <div class="text-xs text-gray-700 border-t border-green-200 pt-2 leading-relaxed break-words">${contacts.join(" | ")}</div>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <h2 class="text-base font-bold text-green-800 uppercase border-b-2 border-green-800 mb-2 pb-1">[01] PROFIL</h2>
               <p class="text-sm text-justify leading-relaxed">${data.summary}</p>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <h2 class="text-base font-bold text-green-800 uppercase border-b-2 border-green-800 mb-3 pb-1">[02] PENGALAMAN KERJA</h2>
               ${data.experiences.map((exp, idx) => `
-                <div class="mb-4">
+                <div class="mb-4 experience-item break-inside-avoid">
                   <div class="flex justify-between items-baseline mb-1">
                     <span class="font-bold text-green-900 text-sm">${String(idx + 1).padStart(2, "0")}. ${exp.position}</span>
                     <span class="text-xs bg-green-100 px-2 py-1 rounded">${exp.duration}</span>
@@ -1108,28 +1195,28 @@
               `).join("")}
             </div>
             <div class="grid grid-cols-2 gap-6 mb-6">
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <h2 class="text-base font-bold text-green-800 uppercase border-b-2 border-green-800 mb-3 pb-1">[03] PENDIDIKAN</h2>
                 ${data.educations.map((edu) => `
-                  <div class="mb-2">
+                  <div class="mb-2 education-item break-inside-avoid">
                     <p class="font-semibold text-sm">${edu.degree}</p>
                     <p class="text-xs text-gray-600">${edu.school}</p>
                     <p class="text-xs text-green-700">${edu.year} ${edu.gpa ? `| GPA: ${edu.gpa}` : ""}</p>
                   </div>
                 `).join("")}
               </div>
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <h2 class="text-base font-bold text-green-800 uppercase border-b-2 border-green-800 mb-3 pb-1">[04] KEAHLIAN</h2>
                 <div class="grid grid-cols-2 gap-1 text-xs">
-                  ${data.skills.map((skill) => `<div class="flex items-center gap-1"><span class="text-green-600">▪</span><span>${skill.name}</span></div>`).join("")}
+                  ${data.skills.map((skill) => `<div class="flex items-center gap-1 break-inside-avoid"><span class="text-green-600">▪</span><span>${skill.name}</span></div>`).join("")}
                 </div>
               </div>
             </div>
             ${data.certifications.length > 0 && data.certifications[0].name ? `
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <h2 class="text-base font-bold text-green-800 uppercase border-b-2 border-green-800 mb-3 pb-1">[05] SERTIFIKASI</h2>
                 <div class="grid grid-cols-2 gap-2 text-xs">
-                  ${data.certifications.map((cert) => `<div class="flex justify-between border-b border-dotted border-gray-300 pb-1"><span>${cert.name}</span><span class="text-green-700">${cert.year}</span></div>`).join("")}
+                  ${data.certifications.map((cert) => `<div class="flex justify-between border-b border-dotted border-gray-300 pb-1 break-inside-avoid"><span>${cert.name}</span><span class="text-green-700">${cert.year}</span></div>`).join("")}
                 </div>
               </div>
             ` : ""}
@@ -1142,7 +1229,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-it cv-paper bg-gray-50">
-            <div class="bg-indigo-900 text-white p-6 mb-6">
+            <div class="bg-indigo-900 text-white p-6 mb-6 cv-section break-inside-avoid">
               <h1 class="text-3xl font-bold mb-2">${data.fullName}</h1>
               <p class="text-indigo-300 text-lg mb-4">${data.profession}</p>
               <div class="flex flex-wrap gap-2 text-xs">
@@ -1154,15 +1241,15 @@
               </div>
             </div>
             <div class="px-6 pb-6">
-              <div class="mb-6 bg-white p-4 rounded-lg shadow-sm">
+              <div class="mb-6 bg-white p-4 rounded-lg shadow-sm cv-section break-inside-avoid">
                 <h2 class="text-sm font-bold text-indigo-900 uppercase tracking-wider mb-2 flex items-center gap-2"><i class="fas fa-terminal text-indigo-600"></i> Summary</h2>
                 <p class="text-gray-700 text-sm leading-relaxed">${data.summary}</p>
               </div>
-              <div class="mb-6">
+              <div class="mb-6 cv-section break-inside-avoid">
                 <h2 class="text-sm font-bold text-indigo-900 uppercase tracking-wider mb-4 flex items-center gap-2"><i class="fas fa-code-branch text-indigo-600"></i> Experience</h2>
                 <div class="space-y-3">
                   ${data.experiences.map((exp) => `
-                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-indigo-500">
+                    <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-indigo-500 experience-item break-inside-avoid">
                       <div class="flex justify-between items-start mb-2">
                         <div>
                           <h3 class="font-bold text-gray-800">${exp.position}</h3>
@@ -1177,17 +1264,17 @@
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-4">
-                <div class="bg-white p-4 rounded-lg shadow-sm">
+                <div class="bg-white p-4 rounded-lg shadow-sm cv-section break-inside-avoid">
                   <h2 class="text-sm font-bold text-indigo-900 uppercase tracking-wider mb-3 flex items-center gap-2"><i class="fas fa-graduation-cap text-indigo-600"></i> Education</h2>
                   ${data.educations.map((edu) => `
-                    <div class="mb-3 pb-3 border-b border-gray-100 last:border-0 last:pb-0">
+                    <div class="mb-3 pb-3 border-b border-gray-100 last:border-0 last:pb-0 education-item break-inside-avoid">
                       <h4 class="font-semibold text-sm text-gray-800">${edu.degree}</h4>
                       <p class="text-xs text-gray-600">${edu.school}</p>
                       <p class="text-xs text-indigo-600 mt-1">${edu.year}</p>
                     </div>
                   `).join("")}
                 </div>
-                <div class="space-y-4">
+                <div class="space-y-4 cv-section break-inside-avoid">
                   <div class="bg-white p-4 rounded-lg shadow-sm">
                     <h2 class="text-sm font-bold text-indigo-900 uppercase tracking-wider mb-3 flex items-center gap-2"><i class="fas fa-layer-group text-indigo-600"></i> Tech Stack</h2>
                     <div class="flex flex-wrap gap-2">
@@ -1198,7 +1285,7 @@
                     <div class="bg-white p-4 rounded-lg shadow-sm">
                       <h2 class="text-sm font-bold text-indigo-900 uppercase tracking-wider mb-3 flex items-center gap-2"><i class="fas fa-award text-indigo-600"></i> Certifications</h2>
                       <div class="space-y-2">
-                        ${data.certifications.map((cert) => `<div class="flex items-center gap-2 text-xs"><i class="fas fa-check-circle text-green-500"></i><span class="text-gray-700">${cert.name}</span><span class="text-gray-400 ml-auto">${cert.year}</span></div>`).join("")}
+                        ${data.certifications.map((cert) => `<div class="flex items-center gap-2 text-xs break-inside-avoid"><i class="fas fa-check-circle text-green-500"></i><span class="text-gray-700">${cert.name}</span><span class="text-gray-400 ml-auto">${cert.year}</span></div>`).join("")}
                       </div>
                     </div>
                   ` : ""}
@@ -1220,25 +1307,25 @@
         if (hasWebsite) contactProps += `<div class="pl-4 text-xs"><span class="text-yellow-300">website</span>: <span class="text-green-300">"${data.website}"</span>,</div>`;
         return `
           <div class="template-cs cv-paper bg-slate-900 text-slate-300">
-            <div class="border-b border-slate-700 pb-6 mb-6">
+            <div class="border-b border-slate-700 pb-6 mb-6 cv-section break-inside-avoid">
               <div class="flex items-center gap-2 mb-2"><span class="text-green-400">$</span><span class="text-blue-400">whoami</span></div>
               <h1 class="text-3xl font-bold text-white mb-2">${data.fullName}</h1>
               <p class="text-orange-400 font-mono text-lg">${data.profession}</p>
-              <div class="mt-4 space-y-1 font-mono">
+              <div class="mt-4 space-y-1 font-mono cv-section break-inside-avoid">
                 <div class="text-xs"><span class="text-purple-400">const</span> <span class="text-blue-400">contact</span> = {</div>
                 ${contactProps}
                 <div class="text-xs">};</div>
               </div>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <div class="flex items-center gap-2 mb-2 text-sm"><span class="text-green-400">//</span><span class="text-slate-400">About</span></div>
               <p class="text-sm leading-relaxed border-l-2 border-green-400 pl-3">${data.summary}</p>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <div class="flex items-center gap-2 mb-3 text-sm"><span class="text-green-400">//</span><span class="text-slate-400">Work Experience</span></div>
               <div class="space-y-3">
                 ${data.experiences.map((exp) => `
-                  <div class="bg-slate-800 p-3 rounded border border-slate-700">
+                  <div class="bg-slate-800 p-3 rounded border border-slate-700 experience-item break-inside-avoid">
                     <div class="flex justify-between items-start mb-1"><span class="text-blue-400 font-semibold text-sm">${exp.position}</span><span class="text-xs text-slate-500">${exp.duration}</span></div>
                     <div class="text-xs text-orange-400 mb-2">${exp.company} | ${exp.location}</div>
                     <p class="text-xs text-slate-400 leading-relaxed">${exp.description}</p>
@@ -1247,10 +1334,10 @@
               </div>
             </div>
             <div class="grid grid-cols-2 gap-4">
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <div class="flex items-center gap-2 mb-3 text-sm"><span class="text-green-400">//</span><span class="text-slate-400">Education</span></div>
                 ${data.educations.map((edu) => `
-                  <div class="mb-2 text-xs">
+                  <div class="mb-2 text-xs education-item break-inside-avoid">
                     <div class="text-purple-400">class ${edu.degree.replace(/\s/g, "")} {</div>
                     <div class="pl-2 text-slate-400">school: <span class="text-green-300">"${edu.school}"</span>;</div>
                     <div class="pl-2 text-slate-400">year: <span class="text-orange-400">${edu.year}</span>;</div>
@@ -1258,7 +1345,7 @@
                   </div>
                 `).join("")}
               </div>
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <div class="flex items-center gap-2 mb-3 text-sm"><span class="text-green-400">//</span><span class="text-slate-400">Skills</span></div>
                 <div class="flex flex-wrap gap-2 mb-4">
                   ${data.skills.map((skill) => `<span class="bg-slate-800 text-blue-400 px-2 py-1 rounded text-xs border border-slate-700 font-mono">${skill.name}</span>`).join("")}
@@ -1266,7 +1353,7 @@
                 ${data.certifications.length > 0 && data.certifications[0].name ? `
                   <div class="flex items-center gap-2 mb-3 text-sm"><span class="text-green-400">//</span><span class="text-slate-400">Certifications</span></div>
                   <div class="space-y-1">
-                    ${data.certifications.map((cert) => `<div class="text-xs flex items-center gap-2"><span class="text-yellow-400">import</span><span class="text-blue-400">${cert.name}</span>;<span class="text-slate-500">// ${cert.year}</span></div>`).join("")}
+                    ${data.certifications.map((cert) => `<div class="text-xs flex items-center gap-2 break-inside-avoid"><span class="text-yellow-400">import</span><span class="text-blue-400">${cert.name}</span>;<span class="text-slate-500">// ${cert.year}</span></div>`).join("")}
                   </div>
                 ` : ""}
               </div>
@@ -1280,7 +1367,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-minimal cv-paper bg-white text-gray-800">
-            <div class="mb-8">
+            <div class="mb-8 cv-section break-inside-avoid">
               <h1 class="text-4xl font-light tracking-tight mb-2">${data.fullName}</h1>
               <p class="text-lg text-gray-500 font-light mb-4">${data.profession}</p>
               <div class="flex flex-wrap gap-4 text-xs text-gray-600 border-t border-gray-200 pt-4">
@@ -1293,13 +1380,13 @@
                 ${hasWebsite ? `<span class="text-gray-300">|</span><span>${data.website}</span>` : ""}
               </div>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <p class="text-sm leading-relaxed text-gray-600 font-light">${data.summary}</p>
             </div>
-            <div class="mb-8">
+            <div class="mb-8 cv-section break-inside-avoid">
               <h2 class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-200 pb-2">Experience</h2>
               ${data.experiences.map((exp) => `
-                <div class="mb-5">
+                <div class="mb-5 experience-item break-inside-avoid">
                   <div class="flex justify-between items-baseline mb-1">
                     <h3 class="font-medium text-gray-900">${exp.position}</h3>
                     <span class="text-xs text-gray-500 font-light">${exp.duration}</span>
@@ -1310,10 +1397,10 @@
               `).join("")}
             </div>
             <div class="grid grid-cols-3 gap-6">
-              <div class="col-span-2">
+              <div class="col-span-2 cv-section break-inside-avoid">
                 <h2 class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-200 pb-2">Education</h2>
                 ${data.educations.map((edu) => `
-                  <div class="mb-3">
+                  <div class="mb-3 education-item break-inside-avoid">
                     <div class="flex justify-between items-baseline">
                       <h4 class="font-medium text-sm text-gray-900">${edu.degree}</h4>
                       <span class="text-xs text-gray-500 font-light">${edu.year}</span>
@@ -1322,7 +1409,7 @@
                   </div>
                 `).join("")}
               </div>
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <h2 class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-200 pb-2">Skills</h2>
                 <div class="flex flex-wrap gap-2">
                   ${data.skills.map((skill) => `<span class="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded">${skill.name}</span>`).join("")}
@@ -1331,7 +1418,7 @@
                   <h2 class="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-200 pb-2 mt-6">Certifications</h2>
                   <div class="space-y-2">
                     ${data.certifications.map((cert) => `
-                      <div class="text-xs text-gray-600">
+                      <div class="text-xs text-gray-600 break-inside-avoid">
                         <span class="font-medium">${cert.name}</span>
                         <span class="text-gray-400 block">${cert.year}</span>
                       </div>
@@ -1349,7 +1436,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-creative cv-paper bg-white">
-            <div class="relative bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 text-white p-8 -mx-6 -mt-6 mb-6">
+            <div class="relative bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 text-white p-8 -mx-6 -mt-6 mb-6 cv-section break-inside-avoid">
               <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
               <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-12 -mb-12"></div>
               <h1 class="text-4xl font-bold mb-2 relative z-10">${data.fullName}</h1>
@@ -1367,21 +1454,21 @@
               ` : ""}
             </div>
             <div class="px-2">
-              <div class="mb-8">
+              <div class="mb-8 cv-section break-inside-avoid">
                 <h2 class="text-lg font-bold text-purple-600 mb-3 flex items-center gap-2">
                   <span class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-sm"><i class="fas fa-user"></i></span>
                   About Me
                 </h2>
                 <p class="text-gray-600 leading-relaxed text-sm pl-10">${data.summary}</p>
               </div>
-              <div class="mb-8">
+              <div class="mb-8 cv-section break-inside-avoid">
                 <h2 class="text-lg font-bold text-pink-600 mb-4 flex items-center gap-2">
                   <span class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-sm"><i class="fas fa-briefcase"></i></span>
                   Experience
                 </h2>
                 <div class="space-y-4 pl-10 border-l-2 border-pink-200 ml-4">
                   ${data.experiences.map((exp) => `
-                    <div class="relative">
+                    <div class="relative experience-item break-inside-avoid">
                       <span class="absolute -left-[21px] top-0 w-4 h-4 rounded-full bg-pink-500 border-2 border-white shadow"></span>
                       <h3 class="font-bold text-gray-800">${exp.position}</h3>
                       <p class="text-sm text-pink-600 font-medium">${exp.company} <span class="text-gray-400">|</span> ${exp.location}</p>
@@ -1392,14 +1479,14 @@
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-6">
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-lg font-bold text-orange-500 mb-4 flex items-center gap-2">
                     <span class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-sm"><i class="fas fa-graduation-cap"></i></span>
                     Education
                   </h2>
                   <div class="pl-10 space-y-3">
                     ${data.educations.map((edu) => `
-                      <div class="bg-orange-50 p-3 rounded-lg">
+                      <div class="bg-orange-50 p-3 rounded-lg education-item break-inside-avoid">
                         <h4 class="font-bold text-sm text-gray-800">${edu.degree}</h4>
                         <p class="text-xs text-gray-600">${edu.school}</p>
                         <p class="text-xs text-orange-500 mt-1">${edu.year}</p>
@@ -1407,7 +1494,7 @@
                     `).join("")}
                   </div>
                 </div>
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-lg font-bold text-purple-600 mb-4 flex items-center gap-2">
                     <span class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-sm"><i class="fas fa-star"></i></span>
                     Skills
@@ -1422,7 +1509,7 @@
                     </h2>
                     <div class="pl-10 space-y-2">
                       ${data.certifications.map((cert) => `
-                        <div class="flex items-center gap-2 text-sm">
+                        <div class="flex items-center gap-2 text-sm break-inside-avoid">
                           <i class="fas fa-check-circle text-green-500"></i>
                           <span class="text-gray-700">${cert.name}</span>
                           <span class="text-xs text-gray-400 ml-auto">${cert.year}</span>
@@ -1442,7 +1529,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-executive cv-paper bg-slate-50">
-            <div class="bg-slate-900 text-amber-50 p-8 -mx-6 -mt-6 mb-6 border-b-4 border-amber-500">
+            <div class="bg-slate-900 text-amber-50 p-8 -mx-6 -mt-6 mb-6 border-b-4 border-amber-500 cv-section break-inside-avoid">
               <div class="flex justify-between items-start">
                 <div>
                   <h1 class="text-3xl font-bold mb-2 text-white">${data.fullName}</h1>
@@ -1458,16 +1545,16 @@
               </div>
             </div>
             <div class="px-2">
-              <div class="mb-6 bg-white p-4 rounded-lg shadow-sm border-l-4 border-amber-500">
+              <div class="mb-6 bg-white p-4 rounded-lg shadow-sm border-l-4 border-amber-500 cv-section break-inside-avoid">
                 <p class="text-gray-700 leading-relaxed text-sm italic">"${data.summary}"</p>
               </div>
-              <div class="mb-6">
+              <div class="mb-6 cv-section break-inside-avoid">
                 <h2 class="text-sm font-bold uppercase tracking-widest text-slate-900 mb-4 flex items-center gap-2">
                   <span class="w-6 h-6 rounded bg-amber-500 flex items-center justify-center text-white text-xs"><i class="fas fa-briefcase"></i></span>
                   Professional Experience
                 </h2>
                 ${data.experiences.map((exp) => `
-                  <div class="mb-4 bg-white p-4 rounded-lg shadow-sm">
+                  <div class="mb-4 bg-white p-4 rounded-lg shadow-sm experience-item break-inside-avoid">
                     <div class="flex justify-between items-start mb-2 border-b border-gray-100 pb-2">
                       <div>
                         <h3 class="font-bold text-slate-900">${exp.position}</h3>
@@ -1481,20 +1568,20 @@
                 `).join("")}
               </div>
               <div class="grid grid-cols-2 gap-4">
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-sm font-bold uppercase tracking-widest text-slate-900 mb-4 flex items-center gap-2">
                     <span class="w-6 h-6 rounded bg-amber-500 flex items-center justify-center text-white text-xs"><i class="fas fa-graduation-cap"></i></span>
                     Education
                   </h2>
                   ${data.educations.map((edu) => `
-                    <div class="mb-3 bg-white p-3 rounded-lg shadow-sm">
+                    <div class="mb-3 bg-white p-3 rounded-lg shadow-sm education-item break-inside-avoid">
                       <h4 class="font-bold text-sm text-slate-900">${edu.degree}</h4>
                       <p class="text-xs text-gray-600">${edu.school}</p>
                       <p class="text-xs text-amber-600 mt-1 font-medium">${edu.year}</p>
                     </div>
                   `).join("")}
                 </div>
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-sm font-bold uppercase tracking-widest text-slate-900 mb-4 flex items-center gap-2">
                     <span class="w-6 h-6 rounded bg-amber-500 flex items-center justify-center text-white text-xs"><i class="fas fa-star"></i></span>
                     Core Competencies
@@ -1519,7 +1606,7 @@
                     </h2>
                     <div class="bg-white p-3 rounded-lg shadow-sm">
                       ${data.certifications.map((cert) => `
-                        <div class="flex justify-between items-center text-sm mb-2 last:mb-0 border-b border-gray-100 last:border-0 pb-2 last:pb-0">
+                        <div class="flex justify-between items-center text-sm mb-2 last:mb-0 border-b border-gray-100 last:border-0 pb-2 last:pb-0 break-inside-avoid">
                           <span class="text-gray-700"><i class="fas fa-award text-amber-500 mr-2"></i>${cert.name}</span>
                           <span class="text-xs text-gray-500">${cert.year}</span>
                         </div>
@@ -1538,7 +1625,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-modern cv-paper bg-gray-50">
-            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6">
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 cv-section break-inside-avoid">
               <div class="flex flex-col md:flex-row justify-between items-start gap-4">
                 <div>
                   <h1 class="text-3xl font-bold text-gray-900 mb-1">${data.fullName}</h1>
@@ -1555,14 +1642,14 @@
                 <p class="text-sm text-gray-600 leading-relaxed">${data.summary}</p>
               </div>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <span class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white shadow-lg"><i class="fas fa-briefcase"></i></span>
                 Work Experience
               </h2>
               <div class="space-y-4">
                 ${data.experiences.map((exp) => `
-                  <div class="bg-white rounded-xl shadow-md p-5 border-l-4 border-cyan-500 hover:shadow-lg transition-shadow">
+                  <div class="bg-white rounded-xl shadow-md p-5 border-l-4 border-cyan-500 experience-item break-inside-avoid">
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 mb-3">
                       <div>
                         <h3 class="font-bold text-gray-900 text-lg">${exp.position}</h3>
@@ -1577,14 +1664,14 @@
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="bg-white rounded-xl shadow-lg p-5">
+              <div class="bg-white rounded-xl shadow-lg p-5 cv-section break-inside-avoid">
                 <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-white text-sm"><i class="fas fa-graduation-cap"></i></span>
                   Education
                 </h2>
                 <div class="space-y-3">
                   ${data.educations.map((edu) => `
-                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-lg education-item break-inside-avoid">
                       <div class="w-2 h-2 rounded-full bg-purple-500 mt-2 flex-shrink-0"></div>
                       <div>
                         <h4 class="font-bold text-sm text-gray-900">${edu.degree}</h4>
@@ -1595,7 +1682,7 @@
                   `).join("")}
                 </div>
               </div>
-              <div class="space-y-4">
+              <div class="space-y-4 cv-section break-inside-avoid">
                 <div class="bg-white rounded-xl shadow-lg p-5">
                   <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                     <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white text-sm"><i class="fas fa-star"></i></span>
@@ -1613,7 +1700,7 @@
                     </h2>
                     <div class="space-y-2">
                       ${data.certifications.map((cert) => `
-                        <div class="flex items-center justify-between p-2 bg-orange-50 rounded-lg">
+                        <div class="flex items-center justify-between p-2 bg-orange-50 rounded-lg break-inside-avoid">
                           <span class="text-sm text-gray-700 font-medium">${cert.name}</span>
                           <span class="text-xs text-orange-600 bg-white px-2 py-1 rounded">${cert.year}</span>
                         </div>
@@ -1632,7 +1719,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-professional cv-paper bg-white">
-            <div class="text-center border-b-2 border-gray-900 pb-6 mb-6">
+            <div class="text-center border-b-2 border-gray-900 pb-6 mb-6 cv-section break-inside-avoid">
               <h1 class="text-4xl font-bold text-gray-900 mb-2" style="font-family: 'Playfair Display', serif;">${data.fullName}</h1>
               <p class="text-lg text-gray-600 italic mb-4">${data.profession}</p>
               <div class="flex flex-wrap justify-center gap-x-4 gap-y-1 text-xs text-gray-600">
@@ -1645,14 +1732,14 @@
                 ${hasWebsite ? `<span class="text-gray-300">•</span><span>${data.website}</span>` : ""}
               </div>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <h2 class="text-sm font-bold uppercase tracking-widest text-gray-900 mb-3 border-b border-gray-300 pb-1">Professional Summary</h2>
               <p class="text-sm text-gray-700 leading-relaxed text-justify">${data.summary}</p>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <h2 class="text-sm font-bold uppercase tracking-widest text-gray-900 mb-4 border-b border-gray-300 pb-1">Professional Experience</h2>
               ${data.experiences.map((exp) => `
-                <div class="mb-5">
+                <div class="mb-5 experience-item break-inside-avoid">
                   <div class="flex justify-between items-baseline mb-1">
                     <h3 class="font-bold text-gray-900 text-base">${exp.position}</h3>
                     <span class="text-xs text-gray-500 italic">${exp.duration}</span>
@@ -1663,10 +1750,10 @@
               `).join("")}
             </div>
             <div class="grid grid-cols-2 gap-8">
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <h2 class="text-sm font-bold uppercase tracking-widest text-gray-900 mb-4 border-b border-gray-300 pb-1">Education</h2>
                 ${data.educations.map((edu) => `
-                  <div class="mb-3">
+                  <div class="mb-3 education-item break-inside-avoid">
                     <div class="flex justify-between items-baseline">
                       <h4 class="font-bold text-sm text-gray-900">${edu.degree}</h4>
                       <span class="text-xs text-gray-500 italic">${edu.year}</span>
@@ -1675,11 +1762,11 @@
                   </div>
                 `).join("")}
               </div>
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <h2 class="text-sm font-bold uppercase tracking-widest text-gray-900 mb-4 border-b border-gray-300 pb-1">Skills & Expertise</h2>
                 <div class="grid grid-cols-2 gap-x-4 gap-y-1">
                   ${data.skills.map((skill) => `
-                    <div class="text-sm text-gray-700 flex items-center gap-2">
+                    <div class="text-sm text-gray-700 flex items-center gap-2 break-inside-avoid">
                       <span class="text-gray-400">—</span>
                       <span>${skill.name}</span>
                     </div>
@@ -1689,7 +1776,7 @@
                   <h2 class="text-sm font-bold uppercase tracking-widest text-gray-900 mb-3 border-b border-gray-300 pb-1 mt-6">Certifications</h2>
                   <div class="space-y-1">
                     ${data.certifications.map((cert) => `
-                      <div class="text-sm text-gray-700 flex items-center gap-2">
+                      <div class="text-sm text-gray-700 flex items-center gap-2 break-inside-avoid">
                         <span class="text-gray-400">—</span>
                         <span>${cert.name} (${cert.year})</span>
                       </div>
@@ -1707,7 +1794,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-startup cv-paper bg-white">
-            <div class="flex flex-col md:flex-row gap-6 mb-6">
+            <div class="flex flex-col md:flex-row gap-6 mb-6 cv-section break-inside-avoid">
               <div class="flex-1">
                 <h1 class="text-4xl font-extrabold text-gray-900 mb-2 tracking-tight">${data.fullName}</h1>
                 <p class="text-xl text-emerald-600 font-bold mb-4">${data.profession}</p>
@@ -1740,14 +1827,14 @@
                 ` : ""}
               </div>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <span class="bg-emerald-500 text-white w-8 h-8 rounded-lg flex items-center justify-center text-sm transform -rotate-3">🚀</span>
                 Experience
               </h2>
               <div class="space-y-4">
                 ${data.experiences.map((exp, idx) => `
-                  <div class="relative pl-6 pb-4 ${idx !== data.experiences.length - 1 ? "border-l-2 border-emerald-200" : ""}">
+                  <div class="relative pl-6 pb-4 ${idx !== data.experiences.length - 1 ? "border-l-2 border-emerald-200" : ""} experience-item break-inside-avoid">
                     <span class="absolute left-0 top-0 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white shadow -translate-x-[9px]"></span>
                     <div class="bg-gray-50 rounded-lg p-4 hover:bg-emerald-50 transition-colors">
                       <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1 mb-2">
@@ -1762,14 +1849,14 @@
               </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div class="md:col-span-2">
+              <div class="md:col-span-2 cv-section break-inside-avoid">
                 <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <span class="bg-purple-500 text-white w-8 h-8 rounded-lg flex items-center justify-center text-sm transform rotate-3">🎓</span>
                   Education
                 </h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   ${data.educations.map((edu) => `
-                    <div class="border-2 border-gray-100 rounded-lg p-3 hover:border-purple-200 transition-colors">
+                    <div class="border-2 border-gray-100 rounded-lg p-3 hover:border-purple-200 transition-colors education-item break-inside-avoid">
                       <h4 class="font-bold text-sm text-gray-900 mb-1">${edu.degree}</h4>
                       <p class="text-xs text-gray-600 mb-2">${edu.school}</p>
                       <span class="inline-block text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded">${edu.year}</span>
@@ -1777,7 +1864,7 @@
                   `).join("")}
                 </div>
               </div>
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <h2 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <span class="bg-orange-500 text-white w-8 h-8 rounded-lg flex items-center justify-center text-sm transform -rotate-6">⚡</span>
                   Skills
@@ -1792,7 +1879,7 @@
                   </h2>
                   <div class="space-y-2">
                     ${data.certifications.map((cert) => `
-                      <div class="flex items-center gap-2 text-xs bg-yellow-50 p-2 rounded-lg border border-yellow-200">
+                      <div class="flex items-center gap-2 text-xs bg-yellow-50 p-2 rounded-lg border border-yellow-200 break-inside-avoid">
                         <i class="fas fa-trophy text-yellow-500"></i>
                         <div>
                           <span class="font-bold text-gray-800 block">${cert.name}</span>
@@ -1816,7 +1903,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-bold cv-paper bg-white">
-            <div class="bg-black text-white p-8 -mx-6 -mt-6 mb-6 relative overflow-hidden">
+            <div class="bg-black text-white p-8 -mx-6 -mt-6 mb-6 relative overflow-hidden cv-section break-inside-avoid">
               <div class="absolute top-0 right-0 w-64 h-64 bg-red-600 rounded-full -mr-32 -mt-32 opacity-20"></div>
               <div class="absolute bottom-0 left-0 w-48 h-48 bg-orange-500 rounded-full -ml-24 -mb-24 opacity-20"></div>
               <h1 class="text-5xl font-bold mb-2 uppercase tracking-wider relative z-10">${data.fullName}</h1>
@@ -1830,13 +1917,13 @@
               </div>
             </div>
             <div class="px-2">
-              <div class="mb-8 border-l-4 border-red-600 pl-6">
+              <div class="mb-8 border-l-4 border-red-600 pl-6 cv-section break-inside-avoid">
                 <p class="text-lg text-gray-800 leading-relaxed font-medium uppercase tracking-wide">${data.summary}</p>
               </div>
-              <div class="mb-8">
+              <div class="mb-8 cv-section break-inside-avoid">
                 <h2 class="text-2xl font-bold uppercase mb-6 text-black border-b-4 border-red-600 pb-2 inline-block">Experience</h2>
                 ${data.experiences.map((exp) => `
-                  <div class="mb-6 relative">
+                  <div class="mb-6 relative experience-item break-inside-avoid">
                     <div class="flex justify-between items-end mb-2 border-b border-gray-300 pb-2">
                       <h3 class="font-bold text-xl uppercase text-black">${exp.position}</h3>
                       <span class="text-red-600 font-bold text-sm uppercase">${exp.duration}</span>
@@ -1847,17 +1934,17 @@
                 `).join("")}
               </div>
               <div class="grid grid-cols-2 gap-8">
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-2xl font-bold uppercase mb-6 text-black border-b-4 border-orange-500 pb-2 inline-block">Education</h2>
                   ${data.educations.map((edu) => `
-                    <div class="mb-4">
+                    <div class="mb-4 education-item break-inside-avoid">
                       <h4 class="font-bold text-lg uppercase text-black">${edu.degree}</h4>
                       <p class="text-sm text-gray-600 uppercase tracking-wide">${edu.school}</p>
                       <p class="text-red-600 font-bold text-sm mt-1">${edu.year}</p>
                     </div>
                   `).join("")}
                 </div>
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-2xl font-bold uppercase mb-6 text-black border-b-4 border-red-600 pb-2 inline-block">Skills</h2>
                   <div class="flex flex-wrap gap-2 mb-6">
                     ${data.skills.map((skill) => `<span class="bg-black text-white px-4 py-2 text-sm font-bold uppercase tracking-wide hover:bg-red-600 transition-colors">${skill.name}</span>`).join("")}
@@ -1866,7 +1953,7 @@
                     <h2 class="text-2xl font-bold uppercase mb-4 text-black border-b-4 border-orange-500 pb-2 inline-block">Certs</h2>
                     <div class="space-y-2">
                       ${data.certifications.map((cert) => `
-                        <div class="flex justify-between items-center border-b border-gray-200 pb-2">
+                        <div class="flex justify-between items-center border-b border-gray-200 pb-2 break-inside-avoid">
                           <span class="font-bold uppercase text-sm">${cert.name}</span>
                           <span class="text-red-600 font-bold text-sm">${cert.year}</span>
                         </div>
@@ -1886,7 +1973,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-tech cv-paper bg-slate-950 text-slate-200">
-            <div class="border border-violet-500/30 bg-slate-900/50 p-6 mb-6 rounded-lg backdrop-blur relative overflow-hidden">
+            <div class="border border-violet-500/30 bg-slate-900/50 p-6 mb-6 rounded-lg backdrop-blur relative overflow-hidden cv-section break-inside-avoid">
               <div class="absolute inset-0 bg-gradient-to-r from-violet-600/10 to-fuchsia-600/10"></div>
               <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-violet-500"></div>
               <h1 class="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400 relative z-10">${data.fullName}</h1>
@@ -1900,21 +1987,21 @@
               </div>
             </div>
             <div class="space-y-6">
-              <div class="border-l-2 border-violet-500 pl-4">
+              <div class="border-l-2 border-violet-500 pl-4 cv-section break-inside-avoid">
                 <h2 class="text-sm font-bold uppercase tracking-widest text-violet-400 mb-3 flex items-center gap-2">
                   <span class="w-2 h-2 bg-violet-500 rounded-full animate-pulse"></span>
                   System Overview
                 </h2>
                 <p class="text-sm text-slate-300 leading-relaxed">${data.summary}</p>
               </div>
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <h2 class="text-sm font-bold uppercase tracking-widest text-fuchsia-400 mb-4 flex items-center gap-2">
                   <span class="w-2 h-2 bg-fuchsia-500 rounded-full animate-pulse"></span>
                   Experience Log
                 </h2>
                 <div class="space-y-3">
                   ${data.experiences.map((exp) => `
-                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg hover:border-violet-500/50 transition-colors group">
+                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-lg hover:border-violet-500/50 transition-colors group experience-item break-inside-avoid">
                       <div class="flex justify-between items-start mb-2">
                         <div>
                           <h3 class="font-bold text-violet-300 group-hover:text-violet-200 transition-colors">${exp.position}</h3>
@@ -1929,20 +2016,20 @@
                 </div>
               </div>
               <div class="grid grid-cols-2 gap-4">
-                <div class="border-l-2 border-fuchsia-500 pl-4">
+                <div class="border-l-2 border-fuchsia-500 pl-4 cv-section break-inside-avoid">
                   <h2 class="text-sm font-bold uppercase tracking-widest text-fuchsia-400 mb-3 flex items-center gap-2">
                     <span class="w-2 h-2 bg-fuchsia-500 rounded-full"></span>
                     Education Data
                   </h2>
                   ${data.educations.map((edu) => `
-                    <div class="mb-3 bg-slate-900/50 p-3 rounded border border-slate-800">
+                    <div class="mb-3 bg-slate-900/50 p-3 rounded border border-slate-800 education-item break-inside-avoid">
                       <h4 class="font-bold text-sm text-violet-300">${edu.degree}</h4>
                       <p class="text-xs text-slate-400 font-mono">${edu.school}</p>
                       <p class="text-xs text-fuchsia-400 mt-1 font-mono">${edu.year}</p>
                     </div>
                   `).join("")}
                 </div>
-                <div class="border-l-2 border-violet-500 pl-4">
+                <div class="border-l-2 border-violet-500 pl-4 cv-section break-inside-avoid">
                   <h2 class="text-sm font-bold uppercase tracking-widest text-violet-400 mb-3 flex items-center gap-2">
                     <span class="w-2 h-2 bg-violet-500 rounded-full"></span>
                     Tech Stack
@@ -1957,7 +2044,7 @@
                     </h2>
                     <div class="space-y-2">
                       ${data.certifications.map((cert) => `
-                        <div class="flex items-center justify-between text-xs bg-slate-900/50 p-2 rounded border border-slate-800">
+                        <div class="flex items-center justify-between text-xs bg-slate-900/50 p-2 rounded border border-slate-800 break-inside-avoid">
                           <span class="text-slate-300 font-mono">${cert.name}</span>
                           <span class="text-fuchsia-400 font-mono">${cert.year}</span>
                         </div>
@@ -1977,7 +2064,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-dev cv-paper bg-zinc-950 text-zinc-300 font-mono">
-            <div class="border-b border-zinc-800 pb-4 mb-6">
+            <div class="border-b border-zinc-800 pb-4 mb-6 cv-section break-inside-avoid">
               <div class="flex items-center gap-2 mb-4 text-xs text-zinc-600">
                 <span class="text-red-500">●</span>
                 <span class="text-yellow-500">●</span>
@@ -1986,7 +2073,7 @@
               </div>
               <h1 class="text-3xl font-bold text-green-400 mb-2">${data.fullName}</h1>
               <p class="text-xl text-blue-400 mb-4">// ${data.profession}</p>
-              <div class="text-xs space-y-1 bg-zinc-900 p-3 rounded border border-zinc-800">
+              <div class="text-xs space-y-1 bg-zinc-900 p-3 rounded border border-zinc-800 cv-section break-inside-avoid">
                 <div><span class="text-purple-400">const</span> <span class="text-yellow-400">contact</span> = {</div>
                 <div class="pl-4"><span class="text-orange-400">email</span>: <span class="text-green-300">"${data.email}"</span>,</div>
                 <div class="pl-4"><span class="text-orange-400">phone</span>: <span class="text-green-300">"${data.phone}"</span>,</div>
@@ -1996,15 +2083,15 @@
                 <div>};</div>
               </div>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <div class="text-xs text-zinc-600 mb-2"># About</div>
               <p class="text-sm leading-relaxed text-zinc-400 border-l-2 border-green-500 pl-3">${data.summary}</p>
             </div>
-            <div class="mb-6">
+            <div class="mb-6 cv-section break-inside-avoid">
               <div class="text-xs text-zinc-600 mb-3"># Experience</div>
               <div class="space-y-3">
                 ${data.experiences.map((exp) => `
-                  <div class="bg-zinc-900 border border-zinc-800 rounded p-3">
+                  <div class="bg-zinc-900 border border-zinc-800 rounded p-3 experience-item break-inside-avoid">
                     <div class="flex justify-between items-start mb-2">
                       <span class="text-blue-400 font-bold">${exp.position}</span>
                       <span class="text-xs text-zinc-600">${exp.duration}</span>
@@ -2016,10 +2103,10 @@
               </div>
             </div>
             <div class="grid grid-cols-2 gap-4">
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <div class="text-xs text-zinc-600 mb-3"># Education</div>
                 ${data.educations.map((edu) => `
-                  <div class="mb-2 text-xs">
+                  <div class="mb-2 text-xs education-item break-inside-avoid">
                     <div class="text-purple-400">class ${edu.degree.replace(/\s/g, "")} {</div>
                     <div class="pl-2 text-zinc-500">institution: <span class="text-green-300">"${edu.school}"</span>;</div>
                     <div class="pl-2 text-zinc-500">completed: <span class="text-orange-400">${edu.year}</span>;</div>
@@ -2027,7 +2114,7 @@
                   </div>
                 `).join("")}
               </div>
-              <div>
+              <div class="cv-section break-inside-avoid">
                 <div class="text-xs text-zinc-600 mb-3"># Skills</div>
                 <div class="flex flex-wrap gap-2 mb-4">
                   ${data.skills.map((skill) => `<span class="bg-zinc-800 text-green-400 px-2 py-1 rounded text-xs border border-zinc-700 hover:border-green-500 transition-colors cursor-default">${skill.name}</span>`).join("")}
@@ -2036,7 +2123,7 @@
                   <div class="text-xs text-zinc-600 mb-3"># Certifications</div>
                   <div class="space-y-1">
                     ${data.certifications.map((cert) => `
-                      <div class="text-xs flex items-center gap-2">
+                      <div class="text-xs flex items-center gap-2 break-inside-avoid">
                         <span class="text-blue-400">import</span>
                         <span class="text-yellow-400">${cert.name}</span>
                         <span class="text-zinc-600">// ${cert.year}</span>
@@ -2056,7 +2143,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-elegant cv-paper bg-rose-50">
-            <div class="text-center mb-8 pt-4">
+            <div class="text-center mb-8 pt-4 cv-section break-inside-avoid">
               <div class="w-24 h-1 bg-gradient-to-r from-rose-300 via-pink-400 to-rose-300 mx-auto mb-6 rounded-full"></div>
               <h1 class="text-4xl font-bold text-gray-800 mb-2 italic" style="font-family: 'Crimson Text', serif;">${data.fullName}</h1>
               <p class="text-lg text-rose-600 font-medium tracking-wide mb-4">${data.profession}</p>
@@ -2072,17 +2159,17 @@
               <div class="w-24 h-1 bg-gradient-to-r from-rose-300 via-pink-400 to-rose-300 mx-auto mt-6 rounded-full"></div>
             </div>
             <div class="px-8 pb-8">
-              <div class="mb-8 text-center">
+              <div class="mb-8 text-center cv-section break-inside-avoid">
                 <p class="text-sm text-gray-700 leading-relaxed italic max-w-2xl mx-auto">"${data.summary}"</p>
               </div>
-              <div class="mb-8">
+              <div class="mb-8 cv-section break-inside-avoid">
                 <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center justify-center gap-2">
                   <span class="text-rose-400">❧</span>
                   <span class="border-b-2 border-rose-200 pb-1">Professional Experience</span>
                   <span class="text-rose-400">❧</span>
                 </h2>
                 ${data.experiences.map((exp) => `
-                  <div class="mb-6 bg-white p-5 rounded-lg shadow-sm border border-rose-100">
+                  <div class="mb-6 bg-white p-5 rounded-lg shadow-sm border border-rose-100 experience-item break-inside-avoid">
                     <div class="flex justify-between items-baseline mb-2">
                       <h3 class="font-bold text-gray-800 text-lg italic">${exp.position}</h3>
                       <span class="text-xs text-rose-600 bg-rose-50 px-3 py-1 rounded-full">${exp.duration}</span>
@@ -2093,20 +2180,20 @@
                 `).join("")}
               </div>
               <div class="grid grid-cols-2 gap-6">
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                     <span class="text-rose-400">❧</span>
                     <span class="border-b-2 border-rose-200 pb-1">Education</span>
                   </h2>
                   ${data.educations.map((edu) => `
-                    <div class="mb-4 bg-white p-4 rounded-lg shadow-sm border border-rose-100">
+                    <div class="mb-4 bg-white p-4 rounded-lg shadow-sm border border-rose-100 education-item break-inside-avoid">
                       <h4 class="font-bold text-gray-800 italic">${edu.degree}</h4>
                       <p class="text-sm text-gray-600">${edu.school}</p>
                       <p class="text-xs text-rose-600 mt-1 font-medium">${edu.year}</p>
                     </div>
                   `).join("")}
                 </div>
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
                     <span class="text-rose-400">❧</span>
                     <span class="border-b-2 border-rose-200 pb-1">Expertise</span>
@@ -2121,7 +2208,7 @@
                     </h2>
                     <div class="space-y-2">
                       ${data.certifications.map((cert) => `
-                        <div class="flex justify-between items-center text-sm bg-white p-3 rounded-lg border border-rose-100">
+                        <div class="flex justify-between items-center text-sm bg-white p-3 rounded-lg border border-rose-100 break-inside-avoid">
                           <span class="text-gray-700 italic">${cert.name}</span>
                           <span class="text-xs text-rose-600 font-medium">${cert.year}</span>
                         </div>
@@ -2141,7 +2228,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-corporate cv-paper bg-white">
-            <div class="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white p-8 -mx-6 -mt-6 mb-6">
+            <div class="bg-gradient-to-r from-blue-900 via-blue-800 to-indigo-900 text-white p-8 -mx-6 -mt-6 mb-6 cv-section break-inside-avoid">
               <div class="flex justify-between items-start">
                 <div>
                   <h1 class="text-3xl font-bold mb-2 tracking-tight">${data.fullName}</h1>
@@ -2176,16 +2263,16 @@
               </div>
             </div>
             <div class="px-2">
-              <div class="mb-6 bg-slate-50 p-4 rounded-lg border-l-4 border-blue-800">
+              <div class="mb-6 bg-slate-50 p-4 rounded-lg border-l-4 border-blue-800 cv-section break-inside-avoid">
                 <p class="text-sm text-slate-700 leading-relaxed">${data.summary}</p>
               </div>
-              <div class="mb-6">
+              <div class="mb-6 cv-section break-inside-avoid">
                 <h2 class="text-sm font-bold uppercase tracking-widest text-blue-900 mb-4 flex items-center gap-2 border-b-2 border-blue-100 pb-2">
                   <i class="fas fa-briefcase text-blue-700"></i>
                   Professional Experience
                 </h2>
                 ${data.experiences.map((exp) => `
-                  <div class="mb-4 pb-4 border-b border-slate-100 last:border-0">
+                  <div class="mb-4 pb-4 border-b border-slate-100 last:border-0 experience-item break-inside-avoid">
                     <div class="flex justify-between items-start mb-2">
                       <div>
                         <h3 class="font-bold text-slate-900">${exp.position}</h3>
@@ -2199,20 +2286,20 @@
                 `).join("")}
               </div>
               <div class="grid grid-cols-2 gap-6">
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-sm font-bold uppercase tracking-widest text-blue-900 mb-4 flex items-center gap-2 border-b-2 border-blue-100 pb-2">
                     <i class="fas fa-graduation-cap text-blue-700"></i>
                     Education
                   </h2>
                   ${data.educations.map((edu) => `
-                    <div class="mb-3">
+                    <div class="mb-3 education-item break-inside-avoid">
                       <h4 class="font-bold text-sm text-slate-900">${edu.degree}</h4>
                       <p class="text-sm text-slate-600">${edu.school}</p>
                       <p class="text-xs text-blue-700 font-medium mt-1">${edu.year}</p>
                     </div>
                   `).join("")}
                 </div>
-                <div>
+                <div class="cv-section break-inside-avoid">
                   <h2 class="text-sm font-bold uppercase tracking-widest text-blue-900 mb-4 flex items-center gap-2 border-b-2 border-blue-100 pb-2">
                     <i class="fas fa-star text-blue-700"></i>
                     Core Competencies
@@ -2227,7 +2314,7 @@
                     </h2>
                     <div class="space-y-2">
                       ${data.certifications.map((cert) => `
-                        <div class="flex justify-between items-center text-sm">
+                        <div class="flex justify-between items-center text-sm break-inside-avoid">
                           <span class="text-slate-700"><i class="fas fa-check text-blue-600 mr-2"></i>${cert.name}</span>
                           <span class="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">${cert.year}</span>
                         </div>
@@ -2247,7 +2334,7 @@
         const hasLinkedIn = data.linkedin && data.linkedin.trim() !== "";
         return `
           <div class="template-swiss cv-paper bg-white">
-            <div class="grid grid-cols-12 gap-4 mb-8">
+            <div class="grid grid-cols-12 gap-4 mb-8 cv-section break-inside-avoid">
               <div class="col-span-8">
                 <h1 class="text-5xl font-bold text-black uppercase tracking-tighter leading-none mb-2">${data.fullName}</h1>
                 <p class="text-lg text-red-600 font-bold uppercase tracking-widest">${data.profession}</p>
@@ -2260,7 +2347,7 @@
                 ${hasWebsite ? `<div class="border-b border-black pb-1">${data.website}</div>` : ""}
               </div>
             </div>
-            <div class="grid grid-cols-12 gap-4 mb-8">
+            <div class="grid grid-cols-12 gap-4 mb-8 cv-section break-inside-avoid">
               <div class="col-span-3">
                 <div class="bg-red-600 text-white p-2 text-xs font-bold uppercase tracking-widest inline-block transform -rotate-2">About</div>
               </div>
@@ -2268,13 +2355,13 @@
                 <p class="text-sm leading-relaxed text-justify">${data.summary}</p>
               </div>
             </div>
-            <div class="grid grid-cols-12 gap-4 mb-8">
+            <div class="grid grid-cols-12 gap-4 mb-8 cv-section break-inside-avoid">
               <div class="col-span-3">
                 <div class="bg-black text-white p-2 text-xs font-bold uppercase tracking-widest inline-block">Experience</div>
               </div>
               <div class="col-span-9 space-y-4">
                 ${data.experiences.map((exp) => `
-                  <div class="border-b border-gray-200 pb-3 last:border-0">
+                  <div class="border-b border-gray-200 pb-3 last:border-0 experience-item break-inside-avoid">
                     <div class="grid grid-cols-12 gap-2">
                       <div class="col-span-8">
                         <h3 class="font-bold text-sm uppercase">${exp.position}</h3>
@@ -2294,27 +2381,27 @@
               <div class="col-span-3">
                 <div class="bg-red-600 text-white p-2 text-xs font-bold uppercase tracking-widest inline-block transform rotate-1">Education</div>
               </div>
-              <div class="col-span-4 border-l-4 border-black pl-4">
+              <div class="col-span-4 border-l-4 border-black pl-4 cv-section break-inside-avoid">
                 ${data.educations.map((edu) => `
-                  <div class="mb-3">
+                  <div class="mb-3 education-item break-inside-avoid">
                     <h4 class="font-bold text-sm uppercase">${edu.degree}</h4>
                     <p class="text-xs text-gray-600 uppercase">${edu.school}</p>
                     <p class="text-xs font-bold mt-1">${edu.year}</p>
                   </div>
                 `).join("")}
               </div>
-              <div class="col-span-2">
+              <div class="col-span-2 cv-section break-inside-avoid">
                 <div class="bg-black text-white p-2 text-xs font-bold uppercase tracking-widest inline-block transform -rotate-1 mb-3">Skills</div>
                 <div class="space-y-1">
-                  ${data.skills.map((skill) => `<div class="text-xs font-bold uppercase border-b border-gray-200 pb-1">${skill.name}</div>`).join("")}
+                  ${data.skills.map((skill) => `<div class="text-xs font-bold uppercase border-b border-gray-200 pb-1 break-inside-avoid">${skill.name}</div>`).join("")}
                 </div>
               </div>
-              <div class="col-span-3 border-l-4 border-red-600 pl-4">
+              <div class="col-span-3 border-l-4 border-red-600 pl-4 cv-section break-inside-avoid">
                 ${data.certifications.length > 0 && data.certifications[0].name ? `
                   <div class="bg-red-600 text-white p-2 text-xs font-bold uppercase tracking-widest inline-block mb-3">Certs</div>
                   <div class="space-y-2">
                     ${data.certifications.map((cert) => `
-                      <div class="text-xs">
+                      <div class="text-xs break-inside-avoid">
                         <div class="font-bold uppercase">${cert.name}</div>
                         <div class="text-gray-500">${cert.year}</div>
                       </div>
@@ -2323,7 +2410,7 @@
                 ` : ""}
               </div>
             </div>
-            <div class="mt-8 pt-4 border-t-4 border-black">
+            <div class="mt-8 pt-4 border-t-4 border-black cv-section break-inside-avoid">
               <div class="flex justify-between items-center text-xs uppercase tracking-widest">
                 <span class="font-bold">CV Generated</span>
                 <span class="text-red-600 font-bold">${new Date().getFullYear()}</span>
@@ -2371,7 +2458,7 @@
               @page { size: A4; margin: 0; }
               * { margin: 0; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
               body { font-family: Arial, sans-serif; background: white; }
-              .cv-paper { width: 210mm; min-height: 297mm; padding: 15mm; margin: 0; box-sizing: border-box; background: white; page-break-after: always; }
+              .cv-paper { width: 210mm; min-height: 297mm; max-height: 297mm; padding: 12mm; margin: 0; box-sizing: border-box; background: white; page-break-after: always; page-break-inside: avoid; overflow: hidden; }
               
               /* Template Fonts */
               .template-ats { font-family: Arial, sans-serif !important; }
@@ -2392,6 +2479,87 @@
               .template-elegant { font-family: "Crimson Text", serif !important; }
               .template-corporate { font-family: "Work Sans", sans-serif !important; }
               .template-swiss { font-family: Inter, sans-serif !important; }
+              
+              /* CRITICAL: Reset margin negatif untuk print */
+              .-mx-6, .-mx-4 { margin-left: 0 !important; margin-right: 0 !important; }
+              .-mt-6, .-mt-4 { margin-top: 0 !important; }
+              .-mb-6, .-mb-4 { margin-bottom: 0 !important; }
+              .-ml-12, .-mr-16 { margin-left: 0 !important; margin-right: 0 !important; }
+              
+              /* CRITICAL: Batasi ukuran font untuk print */
+              .text-5xl { font-size: 28pt !important; line-height: 1.2 !important; }
+              .text-4xl { font-size: 24pt !important; line-height: 1.2 !important; }
+              .text-3xl { font-size: 20pt !important; line-height: 1.2 !important; }
+              .text-2xl { font-size: 16pt !important; line-height: 1.3 !important; }
+              .text-xl { font-size: 14pt !important; line-height: 1.4 !important; }
+              .text-lg { font-size: 12pt !important; line-height: 1.4 !important; }
+              .text-base { font-size: 11pt !important; line-height: 1.5 !important; }
+              .text-sm { font-size: 10pt !important; line-height: 1.5 !important; }
+              .text-xs { font-size: 9pt !important; line-height: 1.5 !important; }
+              
+              /* CRITICAL: Kurangi spacing untuk print */
+              .p-8 { padding: 16px !important; }
+              .p-6 { padding: 12px !important; }
+              .p-5 { padding: 10px !important; }
+              .p-4 { padding: 8px !important; }
+              .px-8 { padding-left: 16px !important; padding-right: 16px !important; }
+              .px-6 { padding-left: 12px !important; padding-right: 12px !important; }
+              .py-6 { padding-top: 12px !important; padding-bottom: 12px !important; }
+              .space-y-6 > * + * { margin-top: 12px !important; }
+              .space-y-4 > * + * { margin-top: 8px !important; }
+              .space-y-3 > * + * { margin-top: 6px !important; }
+              .gap-8 { gap: 16px !important; }
+              .gap-6 { gap: 12px !important; }
+              .gap-4 { gap: 8px !important; }
+              .mb-8 { margin-bottom: 16px !important; }
+              .mb-6 { margin-bottom: 12px !important; }
+              .mb-4 { margin-bottom: 8px !important; }
+              .mt-8 { margin-top: 16px !important; }
+              .mt-6 { margin-top: 12px !important; }
+              
+              /* CRITICAL: Page break control */
+              .break-inside-avoid { break-inside: avoid !important; page-break-inside: avoid !important; }
+              .cv-section { break-inside: avoid !important; page-break-inside: avoid !important; }
+              .experience-item { break-inside: avoid !important; page-break-inside: avoid !important; }
+              .education-item { break-inside: avoid !important; page-break-inside: avoid !important; }
+              
+              /* Hapus transform untuk print */
+              .transform, .-rotate-1, .-rotate-2, .-rotate-3, .-rotate-6, 
+              .rotate-1, .rotate-3, .rotate-6, .-translate-x-\\[9px\\] {
+                transform: none !important;
+              }
+              
+              /* Hapus gradient kompleks, gunakan solid color */
+              .bg-gradient-to-r, .bg-gradient-to-br {
+                background-image: none !important;
+              }
+              
+              /* Simplifikasi border untuk print */
+              .border-double { border-style: solid !important; border-width: 2px !important; }
+              .border-4 { border-width: 2px !important; }
+              .border-b-4 { border-bottom-width: 2px !important; }
+              .border-l-4 { border-left-width: 2px !important; }
+              .border-t-4 { border-top-width: 2px !important; }
+              
+              /* Shadow dihapus untuk print */
+              .shadow-lg, .shadow-md, .shadow-sm, .shadow {
+                box-shadow: none !important;
+              }
+              
+              /* Backdrop blur dihapus */
+              .backdrop-blur, .backdrop-blur-sm {
+                backdrop-filter: none !important;
+              }
+              
+              /* Maksimal 2 kolom untuk grid print */
+              .grid-cols-12 { grid-template-columns: repeat(2, 1fr) !important; }
+              .grid-cols-4 { grid-template-columns: repeat(2, 1fr) !important; }
+              .grid-cols-3 { grid-template-columns: repeat(2, 1fr) !important; }
+              .col-span-8, .col-span-9 { grid-column: span 2 / span 2 !important; }
+              .col-span-4, .col-span-3, .col-span-2 { grid-column: span 1 / span 1 !important; }
+              
+              /* Whitespace control */
+              .whitespace-nowrap { white-space: normal !important; }
               
               /* All utility classes for print */
               .bg-white { background-color: #ffffff !important; }
@@ -2554,57 +2722,6 @@
               .text-fuchsia-500 { color: #d946ef !important; }
               .text-fuchsia-600 { color: #c026d3 !important; }
               
-              /* Gradients */
-              .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)) !important; }
-              .bg-gradient-to-br { background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)) !important; }
-              .from-purple-600 { --tw-gradient-from: #9333ea !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(147, 51, 234, 0)) !important; }
-              .from-pink-100 { --tw-gradient-from: #fce7f3 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(252, 231, 243, 0)) !important; }
-              .from-pink-500 { --tw-gradient-from: #ec4899 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(236, 72, 153, 0)) !important; }
-              .from-blue-100 { --tw-gradient-from: #dbeafe !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(219, 234, 254, 0)) !important; }
-              .from-cyan-100 { --tw-gradient-from: #cffafe !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(207, 250, 254, 0)) !important; }
-              .from-cyan-400 { --tw-gradient-from: #22d3ee !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(34, 211, 238, 0)) !important; }
-              .from-green-100 { --tw-gradient-from: #dcfce7 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(220, 252, 231, 0)) !important; }
-              .from-indigo-100 { --tw-gradient-from: #e0e7ff !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(224, 231, 255, 0)) !important; }
-              .from-orange-100 { --tw-gradient-from: #ffedd5 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(255, 237, 213, 0)) !important; }
-              .from-gray-100 { --tw-gradient-from: #f3f4f6 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(243, 244, 246, 0)) !important; }
-              .from-purple-100 { --tw-gradient-from: #f3e8ff !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(243, 232, 255, 0)) !important; }
-              .from-purple-400 { --tw-gradient-from: #c084fc !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(192, 132, 252, 0)) !important; }
-              .from-purple-500 { --tw-gradient-from: #a855f7 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(168, 85, 247, 0)) !important; }
-              .from-amber-100 { --tw-gradient-from: #fef3c7 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(254, 243, 199, 0)) !important; }
-              .from-slate-100 { --tw-gradient-from: #f1f5f9 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(241, 245, 249, 0)) !important; }
-              .from-emerald-100 { --tw-gradient-from: #d1fae5 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(209, 250, 229, 0)) !important; }
-              .from-green-400 { --tw-gradient-from: #4ade80 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(74, 222, 128, 0)) !important; }
-              .from-orange-400 { --tw-gradient-from: #fb923c !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(251, 146, 60, 0)) !important; }
-              .from-red-600 { --tw-gradient-from: #dc2626 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(220, 38, 38, 0)) !important; }
-              .from-violet-600 { --tw-gradient-from: #7c3aed !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(124, 58, 237, 0)) !important; }
-              .from-gray-900 { --tw-gradient-from: #111827 !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(17, 24, 39, 0)) !important; }
-              .from-rose-300 { --tw-gradient-from: #fda4af !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(253, 164, 175, 0)) !important; }
-              .from-blue-900 { --tw-gradient-from: #1e3a8a !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(30, 58, 138, 0)) !important; }
-              .via-pink-100 { --tw-gradient-stops: var(--tw-gradient-from), #fce7f3, var(--tw-gradient-to, rgba(252, 231, 243, 0)) !important; }
-              .via-pink-500 { --tw-gradient-stops: var(--tw-gradient-from), #ec4899, var(--tw-gradient-to, rgba(236, 72, 153, 0)) !important; }
-              .via-fuchsia-500 { --tw-gradient-stops: var(--tw-gradient-from), #d946ef, var(--tw-gradient-to, rgba(217, 70, 239, 0)) !important; }
-              .via-pink-400 { --tw-gradient-stops: var(--tw-gradient-from), #f472b6, var(--tw-gradient-to, rgba(244, 114, 182, 0)) !important; }
-              .via-blue-800 { --tw-gradient-stops: var(--tw-gradient-from), #1e40af, var(--tw-gradient-to, rgba(30, 64, 175, 0)) !important; }
-              .to-pink-500 { --tw-gradient-to: #ec4899 !important; }
-              .to-purple-100 { --tw-gradient-to: #f3e8ff !important; }
-              .to-cyan-100 { --tw-gradient-to: #cffafe !important; }
-              .to-emerald-100 { --tw-gradient-to: #d1fae5 !important; }
-              .to-purple-100 { --tw-gradient-to: #f3e8ff !important; }
-              .to-red-100 { --tw-gradient-to: #fee2e2 !important; }
-              .to-gray-200 { --tw-gradient-to: #e5e7eb !important; }
-              .to-yellow-100 { --tw-gradient-to: #fef9c3 !important; }
-              .to-blue-200 { --tw-gradient-to: #bfdbfe !important; }
-              .to-slate-300 { --tw-gradient-to: #cbd5e1 !important; }
-              .to-teal-200 { --tw-gradient-to: #99f6e4 !important; }
-              .to-blue-500 { --tw-gradient-to: #3b82f6 !important; }
-              .to-pink-500 { --tw-gradient-to: #ec4899 !important; }
-              .to-emerald-500 { --tw-gradient-to: #10b981 !important; }
-              .to-red-500 { --tw-gradient-to: #ef4444 !important; }
-              .to-orange-600 { --tw-gradient-to: #ea580c !important; }
-              .to-fuchsia-600 { --tw-gradient-to: #c026d3 !important; }
-              .to-gray-700 { --tw-gradient-to: #374151 !important; }
-              .to-indigo-900 { --tw-gradient-to: #312e81 !important; }
-              
               /* Layout utilities */
               .flex { display: flex !important; }
               .grid { display: grid !important; }
@@ -2637,24 +2754,19 @@
               .space-y-4 > * + * { margin-top: 1rem !important; }
               .space-y-6 > * + * { margin-top: 1.5rem !important; }
               .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
-              .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
-              .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
-              .grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)) !important; }
+              .grid-cols-3 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+              .grid-cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+              .grid-cols-12 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
               .col-span-2 { grid-column: span 2 / span 2 !important; }
-              .col-span-3 { grid-column: span 3 / span 3 !important; }
-              .col-span-4 { grid-column: span 4 / span 4 !important; }
-              .col-span-8 { grid-column: span 8 / span 8 !important; }
-              .col-span-9 { grid-column: span 9 / span 9 !important; }
-              .col-span-12 { grid-column: span 12 / span 12 !important; }
+              .col-span-3 { grid-column: span 1 / span 1 !important; }
+              .col-span-4 { grid-column: span 1 / span 1 !important; }
+              .col-span-8 { grid-column: span 2 / span 2 !important; }
+              .col-span-9 { grid-column: span 2 / span 2 !important; }
+              .col-span-12 { grid-column: span 2 / span 2 !important; }
               
               /* Spacing */
               .m-0 { margin: 0 !important; }
               .mx-auto { margin-left: auto !important; margin-right: auto !important; }
-              .-mx-6 { margin-left: -1.5rem !important; margin-right: -1.5rem !important; }
-              .-mt-6 { margin-top: -1.5rem !important; }
-              .-mr-16 { margin-right: -4rem !important; }
-              .-ml-12 { margin-left: -3rem !important; }
-              .-mb-12 { margin-bottom: -3rem !important; }
               .mb-1 { margin-bottom: 0.25rem !important; }
               .mb-2 { margin-bottom: 0.5rem !important; }
               .mb-3 { margin-bottom: 0.75rem !important; }
@@ -2702,15 +2814,6 @@
               .py-1\\.5 { padding-top: 0.375rem !important; padding-bottom: 0.375rem !important; }
               
               /* Typography */
-              .text-xs { font-size: 0.75rem !important; line-height: 1rem !important; }
-              .text-sm { font-size: 0.875rem !important; line-height: 1.25rem !important; }
-              .text-base { font-size: 1rem !important; line-height: 1.5rem !important; }
-              .text-lg { font-size: 1.125rem !important; line-height: 1.75rem !important; }
-              .text-xl { font-size: 1.25rem !important; line-height: 1.75rem !important; }
-              .text-2xl { font-size: 1.5rem !important; line-height: 2rem !important; }
-              .text-3xl { font-size: 1.875rem !important; line-height: 2.25rem !important; }
-              .text-4xl { font-size: 2.25rem !important; line-height: 2.5rem !important; }
-              .text-5xl { font-size: 3rem !important; line-height: 1 !important; }
               .font-light { font-weight: 300 !important; }
               .font-normal { font-weight: 400 !important; }
               .font-medium { font-weight: 500 !important; }
@@ -2735,22 +2838,21 @@
               .text-justify { text-align: justify !important; }
               .break-words { overflow-wrap: break-word !important; }
               .break-all { word-break: break-all !important; }
-              .whitespace-nowrap { white-space: nowrap !important; }
               
               /* Borders */
               .border { border-width: 1px !important; }
               .border-2 { border-width: 2px !important; }
-              .border-4 { border-width: 4px !important; }
+              .border-4 { border-width: 2px !important; }
               .border-b { border-bottom-width: 1px !important; }
               .border-b-2 { border-bottom-width: 2px !important; }
-              .border-b-4 { border-bottom-width: 4px !important; }
+              .border-b-4 { border-bottom-width: 2px !important; }
               .border-l-2 { border-left-width: 2px !important; }
-              .border-l-4 { border-left-width: 4px !important; }
+              .border-l-4 { border-left-width: 2px !important; }
               .border-t { border-top-width: 1px !important; }
-              .border-t-4 { border-top-width: 4px !important; }
+              .border-t-4 { border-top-width: 2px !important; }
               .border-solid { border-style: solid !important; }
               .border-dotted { border-style: dotted !important; }
-              .border-double { border-style: double !important; }
+              .border-double { border-style: solid !important; }
               .border-none { border-style: none !important; }
               .border-black { border-color: #000000 !important; }
               .border-white { border-color: #ffffff !important; }
@@ -2782,7 +2884,6 @@
               .border-violet-500 { border-color: #8b5cf6 !important; }
               .border-violet-500\\/30 { border-color: rgba(139, 92, 246, 0.3) !important; }
               .border-fuchsia-500\\/30 { border-color: rgba(217, 70, 239, 0.3) !important; }
-              .border-dotted { border-style: dotted !important; }
               
               /* Effects */
               .rounded { border-radius: 0.25rem !important; }
@@ -2791,12 +2892,12 @@
               .rounded-2xl { border-radius: 1rem !important; }
               .rounded-full { border-radius: 9999px !important; }
               .rounded-sm { border-radius: 0.125rem !important; }
-              .shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important; }
-              .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; }
-              .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important; }
-              .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important; }
-              .backdrop-blur { backdrop-filter: blur(8px) !important; }
-              .backdrop-blur-sm { backdrop-filter: blur(4px) !important; }
+              .shadow { box-shadow: none !important; }
+              .shadow-sm { box-shadow: none !important; }
+              .shadow-md { box-shadow: none !important; }
+              .shadow-lg { box-shadow: none !important; }
+              .backdrop-blur { backdrop-filter: none !important; }
+              .backdrop-blur-sm { backdrop-filter: none !important; }
               .opacity-20 { opacity: 0.2 !important; }
               .opacity-90 { opacity: 0.9 !important; }
               
@@ -2813,17 +2914,16 @@
               .flex-shrink-0 { flex-shrink: 0 !important; }
               .flex-1 { flex: 1 1 0% !important; }
               .self-end { align-self: flex-end !important; }
-              .transform { transform: translateX(0) translateY(0) rotate(0) skewX(0) skewY(0) scaleX(1) scaleY(1) !important; }
-              .-rotate-1 { transform: rotate(-1deg) !important; }
-              .-rotate-2 { transform: rotate(-2deg) !important; }
-              .-rotate-3 { transform: rotate(-3deg) !important; }
-              .-rotate-6 { transform: rotate(-6deg) !important; }
-              .rotate-1 { transform: rotate(1deg) !important; }
-              .rotate-3 { transform: rotate(3deg) !important; }
-              .rotate-6 { transform: rotate(6deg) !important; }
-              .-translate-x-\\[9px\\] { transform: translateX(-9px) !important; }
-              .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite !important; }
-              @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+              .transform { transform: none !important; }
+              .-rotate-1 { transform: none !important; }
+              .-rotate-2 { transform: none !important; }
+              .-rotate-3 { transform: none !important; }
+              .-rotate-6 { transform: none !important; }
+              .rotate-1 { transform: none !important; }
+              .rotate-3 { transform: none !important; }
+              .rotate-6 { transform: none !important; }
+              .-translate-x-\\[9px\\] { transform: none !important; }
+              .animate-pulse { animation: none !important; }
               .cursor-default { cursor: default !important; }
               .cursor-pointer { cursor: pointer !important; }
               
@@ -2839,8 +2939,8 @@
               .page-break-after { page-break-after: always; }
               
               /* Transitions */
-              .transition-colors { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke !important; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important; transition-duration: 150ms !important; }
-              .transition-shadow { transition-property: box-shadow !important; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important; transition-duration: 150ms !important; }
+              .transition-colors { transition: none !important; }
+              .transition-shadow { transition: none !important; }
               .hover\\:bg-blue-50:hover { background-color: #eff6ff !important; }
               .hover\\:bg-emerald-50:hover { background-color: #ecfdf5 !important; }
               .hover\\:bg-emerald-500:hover { background-color: #10b981 !important; }
@@ -2850,8 +2950,8 @@
               .hover\\:border-violet-500\\/50:hover { border-color: rgba(139, 92, 246, 0.5) !important; }
               .hover\\:text-blue-700:hover { color: #1d4ed8 !important; }
               .hover\\:text-violet-200:hover { color: #ddd6fe !important; }
-              .hover\\:shadow-md:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important; }
-              .hover\\:shadow-lg:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important; }
+              .hover\\:shadow-md:hover { box-shadow: none !important; }
+              .hover\\:shadow-lg:hover { box-shadow: none !important; }
               .group:hover .group-hover\\:text-violet-200 { color: #ddd6fe !important; }
               
               /* Text decoration */
